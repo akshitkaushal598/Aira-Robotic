@@ -1,0 +1,572 @@
+/* ================= FONTS ================= */
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Quicksand:wght@400;500;600;700&display=swap');
+
+/* ================= RESET ================= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Quicksand', sans-serif;
+  overflow: hidden;
+  background: #0d0a1a;
+}
+
+/* ================= SCREENS ================= */
+.screen {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* ================= INTRO SCREEN ================= */
+.intro {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background:
+    radial-gradient(ellipse at 30% 20%, rgba(180, 140, 255, 0.25) 0%, transparent 55%),
+    radial-gradient(ellipse at 70% 80%, rgba(255, 160, 220, 0.2) 0%, transparent 55%),
+    radial-gradient(ellipse at 50% 50%, rgba(100, 80, 180, 0.3) 0%, transparent 70%),
+    linear-gradient(160deg, #0d0a1a 0%, #1a0d2e 50%, #0d1528 100%);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  z-index: 2;
+}
+
+/* Floating stars layer */
+.intro::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(1.5px 1.5px at 10% 15%, rgba(255,220,255,0.8) 0%, transparent 100%),
+    radial-gradient(1px 1px at 25% 40%, rgba(200,180,255,0.6) 0%, transparent 100%),
+    radial-gradient(2px 2px at 60% 10%, rgba(255,200,240,0.7) 0%, transparent 100%),
+    radial-gradient(1px 1px at 80% 30%, rgba(180,220,255,0.5) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 45% 70%, rgba(255,180,220,0.6) 0%, transparent 100%),
+    radial-gradient(1px 1px at 90% 60%, rgba(220,200,255,0.7) 0%, transparent 100%),
+    radial-gradient(2px 2px at 15% 80%, rgba(255,210,240,0.5) 0%, transparent 100%),
+    radial-gradient(1px 1px at 70% 90%, rgba(200,240,255,0.6) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 35% 55%, rgba(255,220,200,0.4) 0%, transparent 100%),
+    radial-gradient(1px 1px at 55% 45%, rgba(220,255,220,0.5) 0%, transparent 100%);
+  animation: starTwinkle 6s ease-in-out infinite alternate;
+  z-index: 0;
+  pointer-events: none;
+}
+
+@keyframes starTwinkle {
+  0%   { opacity: 0.5; transform: scale(1); }
+  100% { opacity: 1;   transform: scale(1.02); }
+}
+
+/* Character */
+.intro-img {
+  position: absolute;
+  bottom: 0;
+  height: 95vh;
+  z-index: 3;
+  animation: floatIntro 5s ease-in-out infinite;
+  filter:
+    drop-shadow(0 0 40px rgba(200, 150, 255, 0.7))
+    drop-shadow(0 0 80px rgba(255, 150, 220, 0.4));
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 12%, black 76%, transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0%, black 12%, black 76%, transparent 100%);
+}
+
+@keyframes floatIntro {
+  0%   { transform: translateY(0px); }
+  50%  { transform: translateY(-18px); }
+  100% { transform: translateY(0px); }
+}
+
+/* Watermark text */
+.intro-text {
+  position: absolute;
+  font-size: 11vw;
+  font-weight: 900;
+  font-family: 'Nunito', sans-serif;
+  letter-spacing: 8px;
+  background: linear-gradient(135deg, rgba(220,180,255,0.07), rgba(255,160,210,0.05));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  opacity: 1;
+  text-align: center;
+  width: 100%;
+  z-index: 1;
+  pointer-events: none;
+  white-space: nowrap;
+  transition: opacity 1s ease;
+}
+
+/* Mode selector */
+.mode-selector {
+  position: absolute;
+  bottom: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  z-index: 4;
+}
+
+.mode-label {
+  color: rgba(220, 190, 255, 0.7);
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.mode-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.mode-btn {
+  padding: 10px 26px;
+  font-size: 14px;
+  font-weight: 700;
+  font-family: 'Quicksand', sans-serif;
+  border-radius: 50px;
+  border: 1px solid rgba(160, 100, 220, 0.5);
+  background: rgba(30, 15, 55, 0.6);
+  backdrop-filter: blur(16px);
+  color: rgba(220, 190, 255, 0.9);   /* bright enough to read */
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-shadow: 0 0 8px rgba(180, 120, 255, 0.4);
+}
+
+.mode-btn.active {
+  background: rgba(140, 80, 220, 0.45);
+  border-color: rgba(200, 150, 255, 0.85);
+  color: #fff;
+  box-shadow:
+    0 0 14px rgba(180, 120, 255, 0.55),
+    inset 0 0 10px rgba(200, 150, 255, 0.15);
+  text-shadow: 0 0 10px rgba(255, 200, 255, 0.6);
+}
+
+.mode-btn:hover:not(.active) {
+  background: rgba(80, 40, 140, 0.5);
+  color: #fff;
+  border-color: rgba(200, 160, 255, 0.6);
+}
+
+#startBtn {
+  padding: 15px 52px;
+  font-size: 16px;
+  font-weight: 700;
+  font-family: 'Quicksand', sans-serif;
+  border-radius: 50px;
+  border: 1px solid rgba(200, 150, 255, 0.6);
+  background: linear-gradient(135deg, rgba(120, 60, 200, 0.55), rgba(180, 80, 160, 0.45));
+  backdrop-filter: blur(20px);
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.35s ease;
+  letter-spacing: 1px;
+  text-shadow: 0 0 10px rgba(220, 180, 255, 0.5);
+  box-shadow: 0 4px 20px rgba(140, 80, 220, 0.4);
+}
+
+#startBtn:hover {
+  transform: scale(1.06) translateY(-2px);
+  background: linear-gradient(135deg, rgba(180, 120, 240, 0.35), rgba(240, 130, 200, 0.3));
+  box-shadow:
+    0 0 20px rgba(180, 120, 255, 0.5),
+    0 0 40px rgba(220, 140, 200, 0.35),
+    0 8px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* Energy aura */
+.energy-aura {
+  position: absolute;
+  width: 520px;
+  height: 520px;
+  background: radial-gradient(circle,
+    rgba(180, 120, 255, 0.35) 0%,
+    rgba(255, 140, 200, 0.15) 40%,
+    transparent 70%);
+  border-radius: 50%;
+  filter: blur(50px);
+  animation: auraPulse 7s ease-in-out infinite;
+  z-index: 0;
+}
+
+@keyframes auraPulse {
+  0%   { transform: scale(0.88); opacity: 0.5; }
+  50%  { transform: scale(1.12); opacity: 0.85; }
+  100% { transform: scale(0.88); opacity: 0.5; }
+}
+
+/* ================= CHAT SCREEN ================= */
+.chat {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  background:
+    radial-gradient(ellipse at 0% 100%, rgba(140, 80, 200, 0.15) 0%, transparent 50%),
+    radial-gradient(ellipse at 100% 0%, rgba(200, 100, 180, 0.1) 0%, transparent 50%),
+    linear-gradient(160deg, #0d0a1a 0%, #140e25 50%, #0d1528 100%);
+  overflow: hidden;
+}
+
+/* Particle canvas overlay on entire chat screen */
+#particleCanvas {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ================= LEFT AVATAR ================= */
+.avatar-container {
+  flex: 0 0 50%;
+  height: 100vh;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Dreamy glow behind avatar */
+.avatar-container::before {
+  content: "";
+  position: absolute;
+  bottom: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 460px;
+  height: 460px;
+  background: radial-gradient(circle,
+    rgba(180, 120, 255, 0.4) 0%,
+    rgba(220, 140, 200, 0.2) 40%,
+    transparent 70%);
+  border-radius: 50%;
+  filter: blur(60px);
+  animation: auraPulse 6s ease-in-out infinite;
+  z-index: 1;
+}
+
+/* Soft shimmer ring */
+.avatar-container::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 300px;
+  height: 60px;
+  background: radial-gradient(ellipse, rgba(200, 150, 255, 0.25) 0%, transparent 70%);
+  filter: blur(20px);
+  border-radius: 50%;
+  z-index: 1;
+  animation: shimmerPulse 4s ease-in-out infinite;
+}
+
+@keyframes shimmerPulse {
+  0%, 100% { opacity: 0.4; transform: translateX(-50%) scaleX(0.9); }
+  50%       { opacity: 0.8; transform: translateX(-50%) scaleX(1.1); }
+}
+
+.avatar {
+  height: 90vh;
+  object-fit: contain;
+  position: relative;
+  z-index: 2;
+  animation: floatAvatar 5s ease-in-out infinite;
+  filter: drop-shadow(0 0 30px rgba(180, 130, 255, 0.5));
+  /* Fade both top and bottom so no hard line shows when floating */
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 14%, black 74%, transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0%, black 14%, black 74%, transparent 100%);
+}
+
+@keyframes floatAvatar {
+  0%   { transform: translateY(0px); }
+  50%  { transform: translateY(-16px); }
+  100% { transform: translateY(0px); }
+}
+
+/* Speaking glow */
+.avatar-container.avatar-speaking .avatar {
+  filter:
+    drop-shadow(0 0 30px rgba(255, 160, 220, 0.8))
+    drop-shadow(0 0 60px rgba(180, 120, 255, 0.5));
+}
+
+/* Voice ring canvas — hidden, kept for JS compatibility */
+#voiceRing {
+  display: none;
+}
+
+/* ================= CHAT PANEL ================= */
+.chat-section {
+  flex: 0 0 50%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 28px 28px 24px 28px;
+  background: rgba(10, 6, 22, 0.6);
+  backdrop-filter: blur(30px);
+  border-left: 1px solid rgba(180, 120, 255, 0.1);
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
+}
+
+/* Subtle top glow line */
+.chat-section::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent, rgba(200, 150, 255, 0.5), rgba(255, 160, 220, 0.4), transparent);
+}
+
+/* ── Header ── */
+.chat-header {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.chat-title {
+  font-family: 'Nunito', sans-serif;
+  font-size: 22px;
+  font-weight: 800;
+  background: linear-gradient(135deg, #e8c8ff, #ffb3e0, #c8b8ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: 0.5px;
+}
+
+.mode-indicator {
+  font-size: 12px;
+  font-weight: 700;
+  padding: 5px 14px;
+  border-radius: 50px;
+  background: rgba(180, 120, 255, 0.15);
+  border: 1px solid rgba(180, 120, 255, 0.3);
+  color: rgba(220, 180, 255, 0.9);
+  letter-spacing: 0.5px;
+}
+
+/* ── Chat Box — frosted glass card ── */
+.chat-box {
+  flex: 1 1 0;
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 18px;
+  margin-bottom: 16px;
+  background: rgba(30, 15, 55, 0.55);
+  border: 1px solid rgba(180, 120, 255, 0.22);
+  border-radius: 20px;
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(220, 180, 255, 0.08);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+  scrollbar-width: thin;
+  scrollbar-color: rgba(180, 120, 255, 0.3) transparent;
+}
+
+.chat-box::-webkit-scrollbar { width: 3px; }
+.chat-box::-webkit-scrollbar-track { background: transparent; }
+.chat-box::-webkit-scrollbar-thumb {
+  background: rgba(180, 120, 255, 0.3);
+  border-radius: 3px;
+}
+
+/* ── Messages ── */
+.message {
+  padding: 13px 18px;
+  border-radius: 20px;
+  max-width: 80%;
+  font-size: 14px;
+  line-height: 1.6;
+  font-family: 'Quicksand', sans-serif;
+  font-weight: 500;
+  animation: msgAppear 0.3s ease forwards;
+  word-wrap: break-word;
+}
+
+@keyframes msgAppear {
+  from { opacity: 0; transform: translateY(8px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0)   scale(1); }
+}
+
+.message.user {
+  align-self: flex-end;
+  background: linear-gradient(135deg, #a855f7, #7c3aed, #c026d3);
+  color: white;
+  border-bottom-right-radius: 5px;
+  box-shadow:
+    0 4px 20px rgba(168, 85, 247, 0.4),
+    0 0 0 1px rgba(255,255,255,0.08) inset;
+}
+
+.message.bot {
+  align-self: flex-start;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(200, 160, 255, 0.18);
+  color: rgba(240, 220, 255, 0.95);
+  border-bottom-left-radius: 5px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(10px);
+}
+
+/* ── Bottom Controls Area ── */
+.controls-area {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Text input row */
+.input-area {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.input-area input {
+  flex: 1;
+  padding: 14px 18px;
+  border-radius: 16px;
+  border: 1px solid rgba(180, 120, 255, 0.25);
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(240, 220, 255, 0.95);
+  font-size: 14px;
+  font-family: 'Quicksand', sans-serif;
+  font-weight: 500;
+  outline: none;
+  transition: all 0.25s ease;
+  backdrop-filter: blur(10px);
+}
+
+.input-area input:focus {
+  border-color: rgba(200, 150, 255, 0.6);
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 0 0 3px rgba(180, 120, 255, 0.12);
+}
+
+.input-area input::placeholder {
+  color: rgba(200, 170, 255, 0.35);
+}
+
+.input-area button {
+  flex-shrink: 0;
+  padding: 13px 22px;
+  border-radius: 16px;
+  border: none;
+  background: linear-gradient(135deg, #a855f7, #7c3aed);
+  color: white;
+  font-size: 14px;
+  font-weight: 700;
+  font-family: 'Quicksand', sans-serif;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 15px rgba(168, 85, 247, 0.4);
+}
+
+.input-area button:hover {
+  transform: scale(1.05) translateY(-1px);
+  box-shadow: 0 6px 22px rgba(168, 85, 247, 0.55);
+}
+
+/* Voice controls panel — flex by default, JS toggles display */
+.voice-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 18px;
+  border-radius: 16px;
+  background: rgba(140, 80, 220, 0.1);
+  border: 1px solid rgba(180, 120, 255, 0.22);
+  backdrop-filter: blur(10px);
+}
+
+.mic-status {
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(220, 180, 255, 0.9);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Animated mic dot */
+.mic-status::before {
+  content: "";
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #c084fc;
+  box-shadow: 0 0 8px rgba(192, 132, 252, 0.8);
+  animation: micPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes micPulse {
+  0%, 100% { transform: scale(1);   opacity: 1; }
+  50%       { transform: scale(1.5); opacity: 0.6; }
+}
+
+/* Footer switch button (text mode) */
+.text-mode-footer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* ── Switch Mode Buttons ── */
+.switch-mode-btn {
+  padding: 9px 20px;
+  border-radius: 50px;
+  border: 1px solid rgba(200, 150, 255, 0.35);
+  background: rgba(140, 80, 220, 0.18);
+  color: rgba(230, 200, 255, 0.95);
+  font-size: 13px;
+  font-weight: 700;
+  font-family: 'Quicksand', sans-serif;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  letter-spacing: 0.3px;
+  backdrop-filter: blur(8px);
+}
+
+.switch-mode-btn:hover {
+  background: rgba(160, 100, 240, 0.35);
+  border-color: rgba(200, 150, 255, 0.65);
+  color: #fff;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(160, 100, 240, 0.4);
+}
+
+/* ================= CONTAINER ================= */
+.container {
+  display: contents;
+}

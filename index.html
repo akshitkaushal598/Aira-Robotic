@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aira - Anime AI Assistant</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ================= INTRO SCREEN ================= -->
+  <div id="introScreen" class="screen intro">
+
+    <audio id="ambientSound" src="audio/magic_ambient.mp3" loop></audio>
+
+    <div class="energy-aura"></div>
+
+    <img src="images/assistant_neutral.png" class="intro-img">
+
+    <div id="introText" class="intro-text">AIRA</div>
+
+    <!-- MODE SELECTOR -->
+    <div class="mode-selector" onmouseenter="startAmbient()">
+      <p class="mode-label">✦ Choose your mode ✦</p>
+      <div class="mode-buttons">
+        <button class="mode-btn active" id="voiceBtn" onclick="selectMode('voice')">
+          🎤 Voice
+        </button>
+        <button class="mode-btn" id="textBtn" onclick="selectMode('text')">
+          ⌨️ Text
+        </button>
+      </div>
+      <button id="startBtn" onclick="startChat()">
+        ✨ Start Chatting
+      </button>
+    </div>
+
+  </div>
+
+
+  <!-- ================= CHAT SCREEN ================= -->
+  <div id="chatScreen" class="screen chat hidden">
+
+    <!-- Floating particles layer -->
+    <canvas id="particleCanvas"></canvas>
+
+    <div class="container">
+
+      <!-- LEFT: Avatar -->
+      <div class="avatar-container">
+        <canvas id="voiceRing"></canvas>
+        <img
+          id="assistant"
+          src="images/assistant_neutral.png"
+          class="avatar"
+        />
+      </div>
+
+      <!-- RIGHT: Chat panel -->
+      <div class="chat-section">
+
+        <!-- Header with title + mode badge -->
+        <div class="chat-header">
+          <span class="chat-title">Aira 🌸</span>
+          <span id="modeIndicator" class="mode-indicator">🎤 Voice</span>
+        </div>
+
+        <!-- Scrollable messages -->
+        <div id="chatBox" class="chat-box"></div>
+
+        <!-- All bottom controls -->
+        <div class="controls-area">
+
+          <!-- Text input row (shown in text mode) -->
+          <div class="input-area" id="textInputArea" style="display:none;">
+            <input
+              type="text"
+              id="userInput"
+              placeholder="Say something to Aira..."
+              onkeydown="if(event.key==='Enter') sendMessage()"
+            />
+            <button onclick="sendMessage()">Send ✦</button>
+          </div>
+
+          <!-- Switch to Voice (shown in text mode) -->
+          <div class="text-mode-footer" id="textModeFooter" style="display:none;">
+            <button class="switch-mode-btn" onclick="switchToVoiceMode()">
+              🎤 Switch to Voice
+            </button>
+          </div>
+
+          <!-- Voice controls (shown in voice mode) -->
+          <div class="voice-controls" id="voiceControls" style="display:flex;">
+            <div id="micStatus" class="mic-status">Listening...</div>
+            <button class="switch-mode-btn" onclick="switchToChatMode()">
+              ⌨️ Switch to Text
+            </button>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <script src="script.js"></script>
+
+  <!-- ================= PARTICLE SYSTEM ================= -->
+  <script>
+    (function () {
+      const canvas = document.getElementById("particleCanvas");
+      if (!canvas) return;
+      const ctx = canvas.getContext("2d");
+
+      function resize() {
+        canvas.width  = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+      resize();
+      window.addEventListener("resize", resize);
+
+      const COLORS = [
+        "rgba(220,170,255,VAL)",
+        "rgba(255,160,220,VAL)",
+        "rgba(180,140,255,VAL)",
+        "rgba(255,210,240,VAL)",
+        "rgba(200,220,255,VAL)",
+      ];
+
+      const particles = Array.from({ length: 55 }, () => makeParticle());
+
+      function makeParticle() {
+        return {
+          x:    Math.random() * window.innerWidth,
+          y:    Math.random() * window.innerHeight,
+          r:    Math.random() * 2.2 + 0.5,
+          vx:   (Math.random() - 0.5) * 0.3,
+          vy:   -(Math.random() * 0.4 + 0.1),
+          life: Math.random(),
+          speed: Math.random() * 0.003 + 0.001,
+          color: COLORS[Math.floor(Math.random() * COLORS.length)],
+        };
+      }
+
+      function tick() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        for (const p of particles) {
+          p.life += p.speed;
+          if (p.life > 1) {
+            Object.assign(p, makeParticle(), { x: Math.random() * canvas.width, y: canvas.height + 10, life: 0 });
+          }
+          const alpha = Math.sin(p.life * Math.PI) * 0.65;
+          ctx.beginPath();
+          ctx.arc(p.x + Math.sin(p.life * 4) * 8, p.y - p.life * canvas.height * 0.4, p.r, 0, Math.PI * 2);
+          ctx.fillStyle = p.color.replace("VAL", alpha.toFixed(2));
+          ctx.fill();
+        }
+        requestAnimationFrame(tick);
+      }
+
+      // Only run when chat screen is visible
+      const observer = new MutationObserver(() => {
+        const chat = document.getElementById("chatScreen");
+        if (chat && !chat.classList.contains("hidden")) tick();
+      });
+      const chatEl = document.getElementById("chatScreen");
+      if (chatEl) observer.observe(chatEl, { attributes: true, attributeFilter: ["class"] });
+    })();
+  </script>
+
+</body>
+</html>
